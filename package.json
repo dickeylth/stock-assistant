@@ -2,6 +2,7 @@
   "name": "stock-assistant",
   "version": "0.1.0",
   "private": true,
+  "main": "server/app/page",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
