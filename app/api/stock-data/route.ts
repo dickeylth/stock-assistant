@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     })
   } catch (error) {
     console.error("Error fetching stock data:", error)
-    return NextResponse.json({ error: "Failed to fetch stock data: " + error }, { status: 500 })
+    return NextResponse.json({ error: "Failed to fetch stock data: " + (error as Error).stack }, { status: 500 })
   }
 }
 
