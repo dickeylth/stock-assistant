@@ -2,6 +2,7 @@
     "Meta Data":           MetaData;
     "Time Series (Daily)": { [key: string]: TimeSeriesDaily };
     "Error Message"?:     string;
+    "Information"?:       string;
 }
 
 interface MetaData {

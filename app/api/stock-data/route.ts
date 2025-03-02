@@ -21,8 +21,9 @@ export async function GET(request: Request) {
     const response = await fetch(url)
     resData = await response.json() as StockPrice
 
-    if (resData["Error Message"]) {
-      return NextResponse.json({ error: resData["Error Message"] }, { status: 400 })
+    const message = resData["Error Message"] || resData["Information"]
+    if (message) {
+      return NextResponse.json({ error: message }, { status: 400 })
     }
   } catch (error) {
     console.error("Error fetching stock data:", error)
