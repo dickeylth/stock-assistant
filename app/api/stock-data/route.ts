@@ -42,3 +42,5 @@ export async function GET(request: Request) {
   }
 }
 
+// for cloudflare pages
+export const runtime = 'edge'
