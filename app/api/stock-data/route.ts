@@ -10,6 +10,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Stock symbol is required" }, { status: 400 })
   }
 
+  if (!ALPHA_VANTAGE_API_KEY) {
+    return NextResponse.json({ error: "API key is required" }, { status: 500 })
+  }
+
   const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`
 
   try {
