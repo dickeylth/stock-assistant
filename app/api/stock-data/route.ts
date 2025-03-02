@@ -15,16 +15,23 @@ export async function GET(request: Request) {
   }
 
   const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`
+  let resData: StockPrice
 
   try {
     const response = await fetch(url)
-    const data = await response.json()
+    resData = await response.json() as StockPrice
 
-    if (data["Error Message"]) {
-      return NextResponse.json({ error: data["Error Message"] }, { status: 400 })
+    if (resData["Error Message"]) {
+      return NextResponse.json({ error: resData["Error Message"] }, { status: 400 })
     }
+  } catch (error) {
+    console.error("Error fetching stock data:", error)
+    return NextResponse.json({ error: "Failed to fetch stock data: " + (error as Error).stack }, { status: 500 })
+  }
 
-    const timeSeriesData = data["Time Series (Daily)"]
+  try {
+
+    const timeSeriesData = resData["Time Series (Daily)"]
     const dates = Object.keys(timeSeriesData)
 
     const formattedData = dates.map((date) => ({
@@ -41,8 +48,8 @@ export async function GET(request: Request) {
       data: formattedData,
     })
   } catch (error) {
-    console.error("Error fetching stock data:", error)
-    return NextResponse.json({ error: "Failed to fetch stock data: " + (error as Error).stack }, { status: 500 })
+    console.error("Error parsing stock data:", error)
+    return NextResponse.json({ error: "Failed to fetch stock data: " + (error as Error).stack, data: resData, }, { status: 500 })
   }
 }
 
